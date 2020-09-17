@@ -3,11 +3,17 @@ const bodyParser = require('body-parser');
 const usersRouters = require('./routes/blog-users')
 const mongoose = require('mongoose')
 const keys = require('./config/keys')
+const HttpError = require('./models/http-error')
 
 const app = express();
 app.use (bodyParser.json());
 
 app.use('/api/users', usersRouters)
+
+app.use((req, res, next) =>{
+  const error = new HttpError('Rota invalida', 404)
+  return next(error)
+});
 
 //app.listen(5000, () => console.log('server rodando na porta 5000'))
 mongoose
